@@ -1,21 +1,25 @@
-// 引入 express 框架
 const express = require("express");
-// 创建网站服务器
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 
-app.get("/", (req, res) => {
-  // send()
-  // 1. send 方法内部会检测响应内容的类型
-  // 2. send 方法会自动设置 http 状态码
-  // 3. send 方法还会帮我们自动设置响应的内容类型以及编码
-  res.send("Hello Express");
+// 中间件
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// 路由
+const memberRoutes = require("./routes/memberRoutes");
+app.use("/api/members", memberRoutes);
+
+// 错误处理
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "服务器内部错误" });
 });
 
-app.get("/list", (req, res) => {
-  // 向客户端直接响应一个对象
-  res.send({ name: "zhangsan", age: 20 });
+// 启动服务器
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`服务器运行在端口 ${PORT}`);
 });
-
-// 监听端口
-app.listen(3000);
-console.log("网站服务器启动成功");
