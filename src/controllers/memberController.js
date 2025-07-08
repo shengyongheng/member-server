@@ -29,13 +29,16 @@ exports.getMemberById = async (req, res) => {
 };
 
 exports.createMember = async (req, res) => {
-  const { id, name } = req.body;
-  if (!id) {
-    return res.status(400).json({ error: "缺少id" });
-  }
+  const { id, name } = req.params;
+  console.log(!id);
+  console.log(!name);
 
   if (!name) {
     return res.status(400).json({ error: "缺少name" });
+  }
+
+  if (!id) {
+    return res.status(400).json({ error: "缺少id" });
   }
 
   try {
