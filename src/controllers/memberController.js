@@ -51,15 +51,15 @@ exports.createMember = async (req, res) => {
 };
 
 exports.updateMember = async (req, res) => {
-  const { name } = req.body;
-  if (!name) {
-    return res.status(400).json({ error: "需要提供名称" });
+  const { name, id } = req.body;
+  if (!name || !id) {
+    return res.status(400).json({ error: "需要提供名称和id" });
   }
 
   try {
     const [result] = await pool.query(
-      "UPDATE members SET name = ? WHERE id = ?",
-      [name, req.params.id]
+      "UPDATE members SET name = ? ,id = ? WHERE id = ?",
+      [name, id, req.params.id]
     );
 
     if (result.affectedRows === 0) {
