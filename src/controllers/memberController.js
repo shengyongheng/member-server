@@ -29,9 +29,10 @@ exports.getMemberById = async (req, res) => {
 };
 
 exports.createMember = async (req, res) => {
-  const { id, name } = req.params;
+  const { id, name } = req.query;
   console.log(!id);
   console.log(!name);
+  console.log(req.query);
 
   if (!name) {
     return res.status(400).json({ error: "缺少name" });
