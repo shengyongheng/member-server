@@ -1,7 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const serverlessHttp = require("serverless-http");
 const cors = require("cors");
-const app = express();
+const appExpress = express();
+
+const app = serverlessHttp(appExpress);
 
 // 中间件
 app.use(cors());

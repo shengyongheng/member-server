@@ -26,6 +26,8 @@
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.1",
-    "nodemon": "^3.1.10"
+    "netlify-cli": "^22.2.2",
+    "nodemon": "^3.1.10",
+    "serverless-http": "^3.2.0"
   }
 }

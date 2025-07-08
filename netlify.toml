@@ -1,3 +1,10 @@
-[toml]
 [build]
-  functions = "src"
+  command = "yarn"
+  functions="src"
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/server/:splat"
+  status = 200
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["express"]
