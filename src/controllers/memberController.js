@@ -16,7 +16,7 @@ exports.getAllMembers = async (req, res) => {
 exports.getMemberById = async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM members WHERE id = ?", [
-      req.params.id,
+      req.params.id.slice(1),
     ]);
     if (rows.length === 0) {
       return res.status(404).json({ error: "成员未找到" });
@@ -30,9 +30,6 @@ exports.getMemberById = async (req, res) => {
 
 exports.createMember = async (req, res) => {
   const { id, name } = req.query;
-  console.log(!id);
-  console.log(!name);
-  console.log(req.query);
 
   if (!name) {
     return res.status(400).json({ error: "缺少name" });
@@ -59,7 +56,8 @@ exports.createMember = async (req, res) => {
 };
 
 exports.updateMember = async (req, res) => {
-  const { name, id } = req.body;
+  const { name, id } = req.query;
+
   if (!name || !id) {
     return res.status(400).json({ error: "需要提供名称和id" });
   }
