@@ -30,8 +30,12 @@ exports.getMemberById = async (req, res) => {
 
 exports.createMember = async (req, res) => {
   const { id, name } = req.body;
-  if (!id || !name) {
-    return res.status(400).json({ error: "缺少必要字段" });
+  if (!id) {
+    return res.status(400).json({ error: "缺少id" });
+  }
+
+  if (!name) {
+    return res.status(400).json({ error: "缺少name" });
   }
 
   try {
