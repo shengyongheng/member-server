@@ -1,5 +1,4 @@
-// src/cron/refreshTokenCron.js
-import cron from 'node-cron';
+import { CronJob } from 'cron';
 import axios from 'axios';
 import pool from '../config/db.js';  // 注意加上 .js 扩展名
 
@@ -42,15 +41,22 @@ export async function fetchToken() {
 }
 
 // ============ 定时任务注册 ============
-// 每天凌晨 02:00 执行
-cron.schedule('0 2 * * *', async () => {
-    try {
-        await fetchToken();
-    } catch (error) {
-        console.error('定时任务执行失败:', error.message);
-    }
-});
+const job = new CronJob(
+    '0 2 * * *',                // cron 表达式：每天凌晨 2:00
+    async function () {
+        try {
+            await fetchToken();
+        } catch (error) {
+            console.error('定时任务执行失败:', error.message);
+        }
+    },
+    null,                       // onComplete 回调
+    true,                       // 自动启动
+    'Asia/Shanghai'             // 时区（根据你的服务器时区调整）
+);
 console.log('⏰ 定时任务已注册（每天 02:00 刷新令牌）');
 
 // 服务启动时获取 token
-fetchToken();
+fetchToken()
+    .then(() => console.log('✅ 初始令牌获取成功'))
+    .catch(err => console.error('❌ 初始令牌获取失败，请检查配置:', err.message));
