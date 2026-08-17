@@ -1,95 +1,192 @@
-const pool = require("../config/db");
+// const pool = require("../config/db");
 
-exports.getAllMembers = async (req, res) => {
-  console.log("收到获取所有成员的请求");
+// exports.getAllMembers = async (req, res) => {
+//   console.log("收到获取所有成员的请求");
+//   try {
+//     console.log("正在查询数据库...");
+//     const [rows] = await pool.query("SELECT * FROM members");
+//     console.log("查询结果:", rows);
+//     res.json(rows);
+//   } catch (err) {
+//     console.error("查询出错:", err);
+//     res.status(500).json({ error: "服务器错误" });
+//   }
+// };
+
+// exports.getMemberById = async (req, res) => {
+//   try {
+//     const [rows] = await pool.query("SELECT * FROM members WHERE id = ?", [
+//       req.params.id.slice(1),
+//     ]);
+//     if (rows.length === 0) {
+//       return res.status(404).json({ error: "成员未找到" });
+//     }
+//     res.json(rows[0]);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "服务器错误" });
+//   }
+// };
+
+// exports.createMember = async (req, res) => {
+//   const { id, name } = req.query;
+
+//   if (!name) {
+//     return res.status(400).json({ error: "缺少name" });
+//   }
+
+//   if (!id) {
+//     return res.status(400).json({ error: "缺少id" });
+//   }
+
+//   try {
+//     const [result] = await pool.query(
+//       "INSERT INTO members (id, name) VALUES (?, ?)",
+//       [id, name]
+//     );
+//     res.status(201).json({ id, name });
+//   } catch (err) {
+//     if (err.code === "ER_DUP_ENTRY") {
+//       res.status(409).json({ error: "ID已存在" });
+//     } else {
+//       console.error(err);
+//       res.status(500).json({ error: "创建失败" });
+//     }
+//   }
+// };
+
+// exports.updateMember = async (req, res) => {
+//   const { name, id } = req.query;
+
+//   if (!name || !id) {
+//     return res.status(400).json({ error: "需要提供名称和id" });
+//   }
+
+//   try {
+//     const [result] = await pool.query(
+//       "UPDATE members SET name = ? ,id = ? WHERE id = ?",
+//       [name, id, req.params.id]
+//     );
+
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ error: "成员未找到" });
+//     }
+//     res.json({ id: req.params.id, name });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "更新失败" });
+//   }
+// };
+
+// exports.deleteMember = async (req, res) => {
+//   try {
+//     const [result] = await pool.query("DELETE FROM members WHERE id = ?", [
+//       req.params.id,
+//     ]);
+
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ error: "成员未找到" });
+//     }
+//     res.status(204).send();
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "删除失败" });
+//   }
+// };
+
+
+import pool from '../config/db.js';
+
+export const getAllMembers = async (req, res) => {
+  console.log('收到获取所有成员的请求');
   try {
-    console.log("正在查询数据库...");
-    const [rows] = await pool.query("SELECT * FROM members");
-    console.log("查询结果:", rows);
+    console.log('正在查询数据库...');
+    const [rows] = await pool.query('SELECT * FROM members');
+    console.log('查询结果:', rows);
     res.json(rows);
   } catch (err) {
-    console.error("查询出错:", err);
-    res.status(500).json({ error: "服务器错误" });
+    console.error('查询出错:', err);
+    res.status(500).json({ error: '服务器错误' });
   }
 };
 
-exports.getMemberById = async (req, res) => {
+export const getMemberById = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM members WHERE id = ?", [
+    const [rows] = await pool.query('SELECT * FROM members WHERE id = ?', [
       req.params.id.slice(1),
     ]);
     if (rows.length === 0) {
-      return res.status(404).json({ error: "成员未找到" });
+      return res.status(404).json({ error: '成员未找到' });
     }
     res.json(rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "服务器错误" });
+    res.status(500).json({ error: '服务器错误' });
   }
 };
 
-exports.createMember = async (req, res) => {
+export const createMember = async (req, res) => {
   const { id, name } = req.query;
 
   if (!name) {
-    return res.status(400).json({ error: "缺少name" });
+    return res.status(400).json({ error: '缺少name' });
   }
 
   if (!id) {
-    return res.status(400).json({ error: "缺少id" });
+    return res.status(400).json({ error: '缺少id' });
   }
 
   try {
     const [result] = await pool.query(
-      "INSERT INTO members (id, name) VALUES (?, ?)",
+      'INSERT INTO members (id, name) VALUES (?, ?)',
       [id, name]
     );
     res.status(201).json({ id, name });
   } catch (err) {
-    if (err.code === "ER_DUP_ENTRY") {
-      res.status(409).json({ error: "ID已存在" });
+    if (err.code === 'ER_DUP_ENTRY') {
+      res.status(409).json({ error: 'ID已存在' });
     } else {
       console.error(err);
-      res.status(500).json({ error: "创建失败" });
+      res.status(500).json({ error: '创建失败' });
     }
   }
 };
 
-exports.updateMember = async (req, res) => {
+export const updateMember = async (req, res) => {
   const { name, id } = req.query;
 
   if (!name || !id) {
-    return res.status(400).json({ error: "需要提供名称和id" });
+    return res.status(400).json({ error: '需要提供名称和id' });
   }
 
   try {
     const [result] = await pool.query(
-      "UPDATE members SET name = ? ,id = ? WHERE id = ?",
+      'UPDATE members SET name = ? ,id = ? WHERE id = ?',
       [name, id, req.params.id]
     );
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "成员未找到" });
+      return res.status(404).json({ error: '成员未找到' });
     }
     res.json({ id: req.params.id, name });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "更新失败" });
+    res.status(500).json({ error: '更新失败' });
   }
 };
 
-exports.deleteMember = async (req, res) => {
+export const deleteMember = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM members WHERE id = ?", [
+    const [result] = await pool.query('DELETE FROM members WHERE id = ?', [
       req.params.id,
     ]);
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "成员未找到" });
+      return res.status(404).json({ error: '成员未找到' });
     }
     res.status(204).send();
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "删除失败" });
+    res.status(500).json({ error: '删除失败' });
   }
 };
