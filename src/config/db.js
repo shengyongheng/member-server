@@ -46,20 +46,20 @@ const pool = mysql.createPool({
   database,
   port,
   waitForConnections: true,
-  connectionLimit: 100,
+  connectionLimit: 2,
   queueLimit: 0,
 });
 
-(async () => {
-  try {
-    console.log("正在测试数据库连接...");
-    const [rows] = await pool.query("SELECT * FROM members");
-    console.log("✅ 数据库连接成功", rows);
-  } catch (err) {
-    console.error("❌ 数据库连接失败:");
-    console.error(err);
-    process.exit(1);
-  }
-})();
+// (async () => {
+//   try {
+//     console.log("正在测试数据库连接...");
+//     const [rows] = await pool.query("SELECT * FROM members");
+//     console.log("✅ 数据库连接成功", rows);
+//   } catch (err) {
+//     console.error("❌ 数据库连接失败:");
+//     console.error(err);
+//     process.exit(1);
+//   }
+// })();
 
 export default pool;
